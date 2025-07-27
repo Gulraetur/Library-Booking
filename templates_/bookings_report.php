@@ -36,8 +36,8 @@
                 <tr>
                     <th>Читатель</th>
                     <th>Книга</th>
-                    <th>Дата бронирования</th>
-                    <th>Дата возврата</th>
+                    <th>Период бронирования</th>
+                    <th>Дата отмены</th>
                     <th>Статус</th>
                 </tr>
             </thead>
@@ -46,8 +46,11 @@
                     <tr>
                         <td><?= htmlspecialchars($booking->full_name) ?></td>
                         <td><?= htmlspecialchars($booking->title) ?></td>
-                        <td><?= date('d.m.Y H:i', strtotime($booking->booking_date)) ?></td>
-                        <td><?= $booking->return_date ? date('d.m.Y H:i', strtotime($booking->return_date)) : '—' ?></td>
+                        <td>
+                            <?= date('d.m.Y', strtotime($booking->start_date)) ?> - 
+                            <?= date('d.m.Y', strtotime($booking->end_date)) ?>
+                        </td>
+                        <td><?= $booking->cancel_date ? date('d.m.Y H:i', strtotime($booking->cancel_date)) : '—' ?></td>
                         <td class="status-<?= $booking->status ?>"><?= $booking->status === 'active' ? 'Активно' : 'Завершено' ?></td>
                     </tr>
                 <?php endforeach; ?>

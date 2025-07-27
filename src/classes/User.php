@@ -1,5 +1,6 @@
 <?php
 class User {
+    //Функции класса User
     private $db;
 
     public function __construct(Database $db) {

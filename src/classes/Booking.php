@@ -1,20 +1,23 @@
 <?php
 class Booking {
-    //Функции класса Booking
     private $db;
 
     public function __construct(Database $db) {
         $this->db = $db;
     }
 
-    //Создание бронирования
-    public function create($user_id, $book_id) {
+    // Создание бронирования с периодом
+    public function create($user_id, $book_id, $days = 14) {
         $this->db->query("BEGIN");
         
         try {
+            $start_date = date('Y-m-d H:i:s');
+            $end_date = date('Y-m-d H:i:s', strtotime("+$days days"));
+            
             $this->db->query(
-                "INSERT INTO bookings (user_id, book_id) VALUES (?, ?)",
-                [$user_id, $book_id]
+                "INSERT INTO bookings (user_id, book_id, start_date, end_date) 
+                 VALUES (?, ?, ?, ?)",
+                [$user_id, $book_id, $start_date, $end_date]
             );
             
             $this->db->query(
@@ -22,45 +25,41 @@ class Booking {
                 [$book_id]
             );
             
-            
             $this->db->query("COMMIT");
             return true;
         } catch (Exception $e) {
             $this->db->query("ROLLBACK");
+            error_log("Ошибка бронирования: " . $e->getMessage());
             return false;
         }
     }
 
-    //Завершение бронирования
-    public function complete($booking_id) {
+    // Отмена бронирования
+    public function cancel($booking_id) {
         $this->db->query("BEGIN");
         
         try {
-            // Получаем данные о бронировании
             $stmt = $this->db->query(
-                "SELECT book_id FROM bookings WHERE id = ? AND status = 'active'", 
+                "SELECT book_id FROM bookings WHERE id = ? AND status = 'active'",
                 [$booking_id]
             );
             
-            $booking = $stmt->fetch(PDO::FETCH_OBJ); 
+            $booking = $stmt -> fetch(PDO::FETCH_OBJ);
             
-            if (!$booking || !isset($booking->book_id)) {
+            if (!$booking) {
                 throw new Exception("Активное бронирование не найдено");
             }
             
-            $book_id = $booking->book_id;
-            
-            //Обновляем статус бронирования
+            $book_id = $booking -> book_id;
             $this->db->query(
-                "UPDATE bookings SET status = 'completed', return_date = NOW() 
-                WHERE id = ? AND status = 'active'",
+                "UPDATE bookings 
+                 SET status = 'cancelled', cancel_date = NOW() 
+                 WHERE id = ? AND status = 'active'",
                 [$booking_id]
             );
             
-            //Обновляем статус книги
             $this->db->query(
-                "UPDATE books SET status = 'available' 
-                WHERE id = ?",
+                "UPDATE books SET status = 'available' WHERE id = ?",
                 [$book_id]
             );
             
@@ -68,12 +67,13 @@ class Booking {
             return true;
         } catch (Exception $e) {
             $this->db->query("ROLLBACK");
-            error_log("Ошибка возврата книги: " . $e->getMessage());
+            error_log("Ошибка отмены брони: " . $e->getMessage());
             return false;
         }
     }
 
-    //Фильтры броней
+
+    // Фильтрация бронирований
     public function getFilteredBookings($filters = []) {
         $where = [];
         $params = [];
@@ -95,28 +95,42 @@ class Booking {
         
         $whereClause = $where ? "WHERE " . implode(" AND ", $where) : "";
         
-        $sql = "SELECT bk.id, u.full_name, b.title, bk.booking_date, bk.return_date, bk.status
+        $sql = "SELECT 
+                    bk.id, 
+                    u.full_name, 
+                    b.title, 
+                    bk.start_date, 
+                    bk.end_date,
+                    bk.cancel_date,
+                    bk.status,
+                    CASE
+                        WHEN bk.status = 'active' AND bk.end_date < NOW() THEN 'expired'
+                        ELSE bk.status
+                    END AS actual_status
                 FROM bookings bk
                 JOIN users u ON bk.user_id = u.id
                 JOIN books b ON bk.book_id = b.id
                 $whereClause
-                ORDER BY bk.booking_date DESC";
+                ORDER BY bk.start_date DESC";
                 
         return $this->db->query($sql, $params)->fetchAll(PDO::FETCH_OBJ);
     }
 
-    //Получение активных броней
+    // Получение активных бронирований
     public function getActiveBookings() {
-        
-        $sql = "SELECT bk.id, u.full_name, b.title, bk.booking_date, bk.return_date, bk.status
+        $sql = "SELECT 
+                    bk.id, 
+                    u.full_name, 
+                    b.title, 
+                    bk.start_date, 
+                    bk.end_date,
+                    EXTRACT(DAY FROM (bk.end_date - NOW())) AS days_remaining
                 FROM bookings bk
                 JOIN users u ON bk.user_id = u.id
                 JOIN books b ON bk.book_id = b.id
                 WHERE bk.status = 'active'
-                ORDER BY bk.booking_date DESC";
+                ORDER BY bk.end_date ASC";
                 
         return $this->db->query($sql)->fetchAll(PDO::FETCH_OBJ);
-    
     }
 }
-?>

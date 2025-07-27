@@ -13,7 +13,7 @@
                 <tr>
                     <th>Читатель</th>
                     <th>Книга</th>
-                    <th>Дата бронирования</th>
+                    <th>Период брони</th>  
                     <th>Действия</th>
                 </tr>
             </thead>
@@ -22,12 +22,21 @@
                     <tr>
                         <td><?= htmlspecialchars($booking->full_name) ?></td>
                         <td><?= htmlspecialchars($booking->title) ?></td>
-                        <td><?= date('d.m.Y H:i', strtotime($booking->booking_date)) ?></td>
                         <td>
-                            <form method="POST">
-                                <input type="hidden" name="booking_id" value="<?= $booking->id ?>">
-                                <button type="submit" name="return_book" class="btn-return">Вернуть</button>
-                            </form>
+                            <?= date('d.m.Y', strtotime($booking->start_date)) ?> - 
+                            <?= date('d.m.Y', strtotime($booking->end_date)) ?>
+                        </td>
+                        <td>
+                            <button 
+                                type="button" 
+                                class="btn-cancel open-cancel-modal" 
+                                data-booking-id="<?= $booking->id ?>"
+                                data-book-title="<?= htmlspecialchars($booking->title) ?>"
+                                data-start-date="<?= date('d.m.Y', strtotime($booking->start_date)) ?>"
+                                data-end-date="<?= date('d.m.Y', strtotime($booking->end_date)) ?>"
+                                >
+                                Отменить
+                            </button>
                         </td>
                     </tr>
                 <?php endforeach; ?>

@@ -30,7 +30,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     exit();
 }
 
-// Если запрос не POST, вернуть 404
-header("HTTP/1.0 404 Not Found");
-echo "Страница не найдена";
 ?>

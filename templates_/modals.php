@@ -49,9 +49,44 @@
                     <?php endforeach; ?>
                 </select>
             </div>
+
+            <div class="form-group">
+                <label for="booking_days">Срок бронирования (дней):</label>
+                <input type="number" name="days" id="booking_days" 
+                       min="1" max="30" value="14" required>
+                <small class="hint">Максимум 30 дней</small>
+            </div>
             
             <div class="modal-footer">
                 <button type="submit" name="book_book">Забронировать</button>
+                <button type="button" class="btn-cancel close-modal">Отмена</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<!-- Модальное окно отмены брони -->
+<div id="cancelModal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="close">&times;</span>
+            <h2>Отмена бронирования</h2>
+        </div>
+        <form id="cancelForm" method="POST" action="index.php">
+            <input type="hidden" name="action" value="cancel_booking">
+            <input type="hidden" name="booking_id" id="cancel_booking_id">
+            
+            <div class="confirmation-message">
+                <p>Вы уверены, что хотите отменить бронирование?</p>
+                <div class="booking-info">
+                    <p><strong>Книга:</strong> <span id="cancel_book_title"></span></p>
+                    <p><strong>Период:</strong> <span id="cancel_booking_period"></span></p>
+                </div>
+            </div>
+            
+            <div class="modal-footer">
+                <button type="submit" name="btn-confirm" class="btn-confirm">Подтвердить отмену</button>
                 <button type="button" class="btn-cancel close-modal">Отмена</button>
             </div>
         </form>

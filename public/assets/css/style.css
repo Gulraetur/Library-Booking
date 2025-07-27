@@ -213,3 +213,18 @@ footer {
     z-index: 999;
 }
 
+
+/* В style.css */
+.open-cancel-modal {
+    background: #e74c3c;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.open-cancel-modal:hover {
+    background: #c0392b;
+}

@@ -32,6 +32,51 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    // Обработка открытия модального окна отмены брони
+    document.addEventListener('click', function(e) {
+        if (e.target.classList.contains('open-cancel-modal')) {
+            const bookingId = e.target.getAttribute('data-booking-id');
+            const bookTitle = e.target.getAttribute('data-book-title');
+            const startDate = e.target.getAttribute('data-start-date');
+            const endDate = e.target.getAttribute('data-end-date');
+
+            // Заполняем данные в модальном окне
+            document.getElementById('cancel_booking_id').value = bookingId;
+            document.getElementById('cancel_book_title').textContent = bookTitle;
+            document.getElementById('cancel_booking_period').textContent = 
+                `${startDate} - ${endDate}`;
+
+            // Показываем модальное окно
+            document.getElementById('cancelModal').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+    });
+
+    // Закрытие модального окна
+    document.querySelectorAll('#cancelModal .close, #cancelModal .close-modal').forEach(btn => {
+        btn.addEventListener('click', function() {
+            document.getElementById('cancelModal').style.display = 'none';
+            document.body.style.overflow = '';
+        });
+    });
+
+    // Обработка отправки формы отмены (упрощенная версия)
+    document.getElementById('cancelForm')?.addEventListener('submit', function() {
+        // Здесь не нужно дополнительное подтверждение,
+        // так как пользователь уже подтвердил действие в модальном окне
+        // Просто отправляем форму
+    });
+
+    // Подтверждение действий
+    document.querySelectorAll('.btn-cancel').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            if (e.target.type === 'submit' && 
+                !confirm('Вы уверены, что хотите отменить бронирование?')) {
+                e.preventDefault();
+            }
+        });
+    });
+
     const userModal = document.getElementById('addUserModal')
     const openUserModal = document.getElementById('openAddUserModal')
     const closeUserModal = document.querySelectorAll('#addUserModal .close, #addUserModal .close-modal, #addUserModal .btn-cancel');
@@ -91,14 +136,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // Подтверждение действий
-    document.querySelectorAll('.btn-return').forEach(btn => {
-        btn.addEventListener('click', function(e) {
-            if (!confirm('Вы уверены, что хотите отметить книгу как возвращенную?')) {
-                e.preventDefault();
-            }
-        });
-    });
+    
     
     // Динамическое обновление статуса
     if (window.location.pathname === '/reports.php') {

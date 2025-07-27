@@ -11,27 +11,26 @@ $book = new Book($db);
 $user = new User($db);
 $booking = new Booking($db);
 
-// Обработка действий
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Обработка бронирования книги
-    if (isset($_POST['book_book'])) {
-        if ($booking->create($_POST['user_id'], $_POST['book_id'])) {
-            $_SESSION['message'] = 'Книга забронирована!';
-        } else {
-            $_SESSION['error'] = 'Ошибка бронирования';
-        }
+// Создание брони
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['book_book'])) {
+    $days = intval($_POST['days'] ?? 14);
+    if ($booking->create($_POST['user_id'], $_POST['book_id'], $days)) {
+        $_SESSION['message'] = 'Книга забронирована до ' . 
+            date('d.m.Y', strtotime("+$days days"));
     }
+    // Перенаправление на эту же страницу методом GET
+    header('Location: ' . $_SERVER['PHP_SELF']);
+    exit();
+}
 
-    // Возврат книги
-    if (isset($_POST['return_book'])) {
-        if ($booking->complete($_POST['booking_id'])) {
-            $_SESSION['message'] = 'Книга возвращена!';
-        } else {
-            $_SESSION['error'] = 'Ошибка возврата';
-        }
+// Отмена брони
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['btn-confirm'])) {
+    if ($booking->cancel($_POST['booking_id'])) {
+        $_SESSION['message'] = 'Бронирование отменено';
+    } else {
+        $_SESSION['error'] = 'Ошибка при отмене бронирования';
     }
-
-    header("Location: ".$_SERVER['REQUEST_URI']);
+    header('Location: ' . $_SERVER['HTTP_REFERER']);
     exit();
 }
 
