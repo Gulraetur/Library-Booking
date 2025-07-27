@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
+    <?php require __DIR__.'/../templates_/modals.php'; ?>
     <?php include '../public/message.php'; ?>
     <div class="container">
         <header>
@@ -14,6 +15,7 @@
             <nav>
                 <a href="index.php">Главная</a>
                 <a href="reports.php">Отчеты</a>
+                <button type="button" class="btn-add-user" id="openAddUserModal">Добавить пользователя</button>
             </nav>
         </header>
         <main>
