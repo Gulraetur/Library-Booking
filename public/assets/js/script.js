@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
+
     // Модальное окно бронирования книги
     const bookModal = document.getElementById('bookModal');
     const openBookBtn = document.getElementById('openBookModal');
@@ -60,22 +61,9 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Обработка отправки формы отмены (упрощенная версия)
-    document.getElementById('cancelForm')?.addEventListener('submit', function() {
-        // Здесь не нужно дополнительное подтверждение,
-        // так как пользователь уже подтвердил действие в модальном окне
-        // Просто отправляем форму
-    });
+    // Обработка отправки формы отмены 
+    document.getElementById('cancelForm')?.addEventListener('submit', function() {});
 
-    // Подтверждение действий
-    document.querySelectorAll('.btn-cancel').forEach(btn => {
-        btn.addEventListener('click', function(e) {
-            if (e.target.type === 'submit' && 
-                !confirm('Вы уверены, что хотите отменить бронирование?')) {
-                e.preventDefault();
-            }
-        });
-    });
 
     const userModal = document.getElementById('addUserModal')
     const openUserModal = document.getElementById('openAddUserModal')
@@ -108,10 +96,56 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
+    const bookAddModal = document.getElementById('addBookModal');
+    const openBooksModal = document.getElementById('openAddBooksModal');
+    const closeAddBookModal = document.querySelectorAll('#addBookModal .close, #addBookModal .close-modal, #addBookModal .btn-cancel');
+
+    if (bookAddModal && openBooksModal) {
+        
+        // Функция открытия
+        openBooksModal.addEventListener('click', function() {
+            bookAddModal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        });
+
+        // Функция закрытия
+        function closeModal() {
+            bookAddModal.style.display = 'none';
+            document.body.style.overflow = '';
+        }
+
+        // Закрытие по кнопкам
+        closeAddBookModal.forEach(btn => {
+            btn.addEventListener('click', closeModal);
+        });
+
+        // Закрытие по клику вне окна
+        bookAddModal.addEventListener('click', function(e) {
+            if (e.target === bookAddModal) {
+                closeModal();
+            }
+        });
+
+        // Закрытие по Esc
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && bookAddModal.style.display === 'block') {
+                closeModal();
+            }
+        });
+
+        // Предотвращение закрытия при клике внутри контента
+        document.querySelector('#addBookModal .modal-content').addEventListener('click', function(e) {
+            e.stopPropagation();
+        });
+    } else {
+        console.error('Не найдены элементы:', {bookAddModal, openAddBookModal});
+    }
+
 
     // Инициализация  модальных окон при загрузке
     document.addEventListener('DOMContentLoaded', function() {
         initModal('bookModal', 'openBookModal', 'bookForm');
+        initModal('addUserModal', 'openAddUserModal', 'addUserForm');
         initModal('addBookModal', 'openAddBookModal', 'addBookForm');
     });
 
@@ -148,4 +182,20 @@ document.addEventListener('DOMContentLoaded', function() {
                 : 'Завершено';
         });
     }
+    const alerts = document.querySelectorAll('.alert-popup');
+    
+    alerts.forEach(alert => {
+        // Показывает уведомление
+        alert.style.display = 'block';
+        
+        // Через 3 секунды начинает исчезать
+        setTimeout(() => {
+            alert.classList.add('hide');
+            
+            // После завершения анимации удаляет элемент
+            setTimeout(() => {
+                alert.remove();
+            }, 500);
+        }, 3000);
+    });
 });

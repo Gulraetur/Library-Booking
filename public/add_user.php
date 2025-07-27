@@ -1,11 +1,12 @@
 <?php
 // add_user.php
+
 require_once __DIR__.'/../src/config.php';
 require_once __DIR__.'/../src/classes/Database.php';
 require_once __DIR__.'/../src/classes/User.php';
 
 session_start();
-
+echo "Сообщение для вывода\n";
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $db = new Database();
     $user = new User($db);
@@ -17,9 +18,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         );
         
         if ($result) {
-            $_SESSION['message'] = 'Пользователь успешно добавлен!';
+            $_SESSION['message'] = '✓ Пользователь успешно добавлен!';
         } else {
-            $_SESSION['error'] = 'Ошибка при добавлении пользователя';
+            $_SESSION['error'] = '✗ Ошибка при добавлении пользователя';
         }
     } catch (Exception $e) {
         $_SESSION['error'] = 'Ошибка: ' . $e->getMessage();

@@ -1,13 +1,13 @@
 <?php if (isset($_SESSION['message'])): ?>
-    <div class="alert alert-success">
+    <div class="alert-popup alert-success">
         <?= htmlspecialchars($_SESSION['message']) ?>
-        <?php unset($_SESSION['message']); // Удаляем сообщение после показа ?>
     </div>
+    <?php unset($_SESSION['message']); ?>
 <?php endif; ?>
 
 <?php if (isset($_SESSION['error'])): ?>
-    <div class="alert alert-danger">
+    <div class="alert-popup alert-danger">
         <?= htmlspecialchars($_SESSION['error']) ?>
-        <?php unset($_SESSION['error']); ?>
     </div>
+    <?php unset($_SESSION['error']); ?>
 <?php endif; ?>

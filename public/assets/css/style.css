@@ -133,7 +133,7 @@ tr:hover {
     font-weight: bold;
 }
 
-.status-completed {
+.status-cancelled {
     color: #2ecc71;
     font-weight: bold;
 }
@@ -213,8 +213,6 @@ footer {
     z-index: 999;
 }
 
-
-/* В style.css */
 .open-cancel-modal {
     background: #e74c3c;
     color: white;
@@ -227,4 +225,45 @@ footer {
 
 .open-cancel-modal:hover {
     background: #c0392b;
+}
+
+
+/* Стили для всплывающих уведомлений */
+.alert-popup {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 15px 25px;
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 9999;
+    opacity: 1;
+    transition: opacity 0.5s ease-in-out;
+    animation: slideIn 0.3s ease-out;
+}
+
+.alert-success {
+    background-color: #2ecc71;
+}
+
+.alert-danger {
+    background-color: #e74c3c;
+}
+
+@keyframes slideIn {
+    from {
+        top: -50px;
+        opacity: 0;
+    }
+    to {
+        top: 20px;
+        opacity: 1;
+    }
+}
+
+.alert-popup.hide {
+    opacity: 0;
 }

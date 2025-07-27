@@ -16,6 +16,7 @@
                 <a href="index.php">Главная</a>
                 <a href="reports.php">Отчеты</a>
                 <button type="button" class="btn-add-user" id="openAddUserModal">Добавить пользователя</button>
+                <button type="button" class="btn-add-book" id="openAddBooksModal">Добавить книгу</button>
             </nav>
         </header>
         <main>

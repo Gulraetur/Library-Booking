@@ -92,3 +92,27 @@
         </form>
     </div>
 </div>
+
+<!-- Модальное окно добавления книги -->
+<div id="addBookModal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="close">&times;</span>
+            <h2>Добавить книгу</h2>
+        </div>
+        <form id="addBookForm" method="POST" action="add_book.php">
+            <div class="form-group">
+                <label for="book_title">Название:</label>
+                <input type="text" name="title" id="book_title" required>
+            </div>
+            <div class="form-group">
+                <label for="book_author">Автор:</label>
+                <input type="text" name="author" id="book_author" required>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn-submit">Добавить</button>
+                <button type="button" class="btn-cancel">Отмена</button>
+            </div>
+        </form>
+    </div>
+</div>

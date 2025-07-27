@@ -15,10 +15,11 @@ $booking = new Booking($db);
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['book_book'])) {
     $days = intval($_POST['days'] ?? 14);
     if ($booking->create($_POST['user_id'], $_POST['book_id'], $days)) {
-        $_SESSION['message'] = 'Книга забронирована до ' . 
+        $_SESSION['message'] = '✓ Книга забронирована до ' . 
             date('d.m.Y', strtotime("+$days days"));
+    } else {
+        $_SESSION['error'] = '✗ Ошибка при бронировании книги';
     }
-    // Перенаправление на эту же страницу методом GET
     header('Location: ' . $_SERVER['PHP_SELF']);
     exit();
 }
@@ -26,9 +27,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['book_book'])) {
 // Отмена брони
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['btn-confirm'])) {
     if ($booking->cancel($_POST['booking_id'])) {
-        $_SESSION['message'] = 'Бронирование отменено';
+        $_SESSION['message'] = '✓ Бронирование отменено';
     } else {
-        $_SESSION['error'] = 'Ошибка при отмене бронирования';
+        $_SESSION['error'] = '✗ Ошибка при отмене бронирования';
     }
     header('Location: ' . $_SERVER['HTTP_REFERER']);
     exit();

@@ -46,10 +46,6 @@ class Booking {
             
             $booking = $stmt -> fetch(PDO::FETCH_OBJ);
             
-            if (!$booking) {
-                throw new Exception("Активное бронирование не найдено");
-            }
-            
             $book_id = $booking -> book_id;
             $this->db->query(
                 "UPDATE bookings 
