@@ -7,7 +7,6 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log(openBookBtn)
     console.log(bookModal)
     if (openBookBtn && bookModal) {
-        console.log('1111')
         // Открытие модального окна
         openBookBtn.addEventListener('click', function() {
             bookModal.style.display = 'block';
@@ -147,27 +146,6 @@ document.addEventListener('DOMContentLoaded', function() {
         initModal('bookModal', 'openBookModal', 'bookForm');
         initModal('addUserModal', 'openAddUserModal', 'addUserForm');
         initModal('addBookModal', 'openAddBookModal', 'addBookForm');
-    });
-
-    // Валидация форм
-    document.querySelectorAll('form').forEach(form => {
-        form.addEventListener('submit', function(e) {
-            let valid = true;
-            
-            form.querySelectorAll('[required]').forEach(field => {
-                if (!field.value.trim()) {
-                    valid = false;
-                    field.style.borderColor = '#e74c3c';
-                } else {
-                    field.style.borderColor = '';
-                }
-            });
-            
-            if (!valid) {
-                e.preventDefault();
-                alert('Пожалуйста, заполните все обязательные поля');
-            }
-        });
     });
     
     

@@ -12,12 +12,9 @@ class User {
         $stmt = $this->db->query("SELECT * FROM users ORDER BY full_name");
         return $stmt->fetchAll(PDO::FETCH_OBJ);
     }
-    public function create($full_name, $email) {
-        // Валидация данных
-        if (empty($full_name) || empty($email)) {
-            throw new Exception("Все поля обязательны для заполнения");
-        }
 
+    //Создание в Бд
+    public function create($full_name, $email) {
         if(!empty($full_name)){
             $stmt = $this->db->query(
                 "SELECT id FROM users WHERE email = ?", 

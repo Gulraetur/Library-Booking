@@ -6,7 +6,6 @@ require_once __DIR__.'/../src/classes/Database.php';
 require_once __DIR__.'/../src/classes/User.php';
 
 session_start();
-echo "Сообщение для вывода\n";
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $db = new Database();
     $user = new User($db);

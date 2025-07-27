@@ -1,12 +1,13 @@
 <?php
 class Booking {
+    //Функции класса Booking
     private $db;
 
     public function __construct(Database $db) {
         $this->db = $db;
     }
 
-    // Создание бронирования с периодом
+    //Создание в Бд
     public function create($user_id, $book_id, $days = 14) {
         $this->db->query("BEGIN");
         

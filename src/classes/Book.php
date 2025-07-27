@@ -1,6 +1,5 @@
 <?php
 class Book {
-
     //Функции класса Book
     private $db;
 
@@ -19,12 +18,8 @@ class Book {
         return $stmt->fetchAll(PDO::FETCH_OBJ);
     }
 
-
+    //Создание в Бд
     public function create($title, $author, $status = 'available') {
-        // Валидация данных
-        if (empty($title) || empty($author)) {
-            throw new Exception("Название и автор обязательны");
-        }
         // Проверка уникальности названия 
         if (!empty($title)) {
             $stmt = $this->db->query(
