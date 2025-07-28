@@ -1,8 +1,8 @@
 <?php
 // add_book.php
-require_once __DIR__.'/../src/config.php';
-require_once __DIR__.'/../src/classes/Database.php';
-require_once __DIR__.'/../src/classes/Book.php';
+require_once __DIR__.'/../config/config.php';
+require_once __DIR__.'/../app/src/classes/Database.php';
+require_once __DIR__.'/../app/src/classes/Book.php';
 
 session_start();
 

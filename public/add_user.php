@@ -1,9 +1,9 @@
 <?php
 // add_user.php
 
-require_once __DIR__.'/../src/config.php';
-require_once __DIR__.'/../src/classes/Database.php';
-require_once __DIR__.'/../src/classes/User.php';
+require_once __DIR__.'/../config/config.php';
+require_once __DIR__.'/../app/src/classes/Database.php';
+require_once __DIR__.'/../app/src/classes/User.php';
 
 session_start();
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
