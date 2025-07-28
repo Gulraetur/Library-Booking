@@ -108,7 +108,7 @@ class Booking {
                 JOIN users u ON bk.user_id = u.id
                 JOIN books b ON bk.book_id = b.id
                 $whereClause
-                ORDER BY bk.start_date DESC";
+                ORDER BY bk.cancel_date DESC";
                 
         return $this->db->query($sql, $params)->fetchAll(PDO::FETCH_OBJ);
     }
