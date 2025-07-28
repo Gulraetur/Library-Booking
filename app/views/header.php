@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
-    <?php require __DIR__.'/../templates_/modals.php'; ?>
+    <?php require __DIR__.'\modals.php'; ?>
     <?php include '../public/message.php'; ?>
     <div class="container">
         <header>

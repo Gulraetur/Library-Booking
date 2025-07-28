@@ -1,10 +1,10 @@
 <?php
 session_start();
-require_once __DIR__.'/../src/config.php';
-require_once __DIR__.'/../src/classes/Database.php';
-require_once __DIR__.'/../src/classes/Book.php';
-require_once __DIR__.'/../src/classes/User.php';
-require_once __DIR__.'/../src/classes/Booking.php';
+require_once __DIR__.'/../config/config.php';
+require_once __DIR__.'/../app/src/classes/Database.php';
+require_once __DIR__.'/../app/src/classes/Book.php';
+require_once __DIR__.'/../app/src/classes/User.php';
+require_once __DIR__.'/../app/src/classes/Booking.php';
 
 $db = new Database();
 $book = new Book($db);
@@ -40,7 +40,7 @@ $users = $user->getAllUsers();
 $available_books = $book->getAvailableBooks();
 $active_bookings = $booking->getActiveBookings();
 
-require __DIR__.'/../templates_/header.php';
-require __DIR__.'/../templates_/main.php';
-require __DIR__.'/../templates_/footer.php';
+require __DIR__.'/../app/views/header.php';
+require __DIR__.'/../app/views/main.php';
+require __DIR__.'/../app/views/footer.php';
 ?>
